@@ -5,4 +5,5 @@
   <fixed facet="jst.utility"/>
   <installed facet="java" version="1.7"/>
   <installed facet="jst.utility" version="1.0"/>
+  <installed facet="com.ibm.etools.javaee.cdi" version="1.0"/>
 </faceted-project>

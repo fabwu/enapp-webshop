@@ -2,7 +2,6 @@ package ch.hslu.edu.enapp.webshop.common.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,8 +15,6 @@ public class ProductDTO implements Serializable {
     private String name;
 
     private BigDecimal unitprice;
-
-    private List<PurchaseitemDTO> purchaseitems;
 
     public int getProductid() {
         return this.productid;
@@ -57,28 +54,6 @@ public class ProductDTO implements Serializable {
 
     public void setUnitprice(BigDecimal unitprice) {
         this.unitprice = unitprice;
-    }
-
-    public List<PurchaseitemDTO> getPurchaseitems() {
-        return this.purchaseitems;
-    }
-
-    public void setPurchaseitems(List<PurchaseitemDTO> purchaseitems) {
-        this.purchaseitems = purchaseitems;
-    }
-
-    public PurchaseitemDTO addPurchaseitem(PurchaseitemDTO purchaseitem) {
-        getPurchaseitems().add(purchaseitem);
-        purchaseitem.setProductBean(this);
-
-        return purchaseitem;
-    }
-
-    public PurchaseitemDTO removePurchaseitem(PurchaseitemDTO purchaseitem) {
-        getPurchaseitems().remove(purchaseitem);
-        purchaseitem.setProductBean(null);
-
-        return purchaseitem;
     }
 
 }

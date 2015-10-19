@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="resources/templates/template.xhtml">
+
+    <ui:define name="content">
+        <h1>
+            <h:outputFormat value="Webshop Home" />
+        </h1>
+        <br />
+        <table>
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Beschreibung</b></td>
+                <td><b>Preis</b></td>
+            </tr>
+            <ui:repeat value="#{product.productList}" var="singleProduct">
+                <tr>
+                    <td><h:outputText value="#{singleProduct.name}" /></td>
+                    <td><h:outputText value="#{singleProduct.description}" /></td>
+                    <td><h:outputText value="#{singleProduct.unitprice}" /></td>
+                </tr>
+            </ui:repeat>
+        </table>
+
+
+    </ui:define>
+</ui:composition>

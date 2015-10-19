@@ -1,0 +1,159 @@
+/* Layout */
+#header {
+    height: 115px;
+    width: 950px;
+    padding: 0px;
+    margin: 20px 0px 30px 20px;
+    height: 145px;
+    background-color: #127CC1;
+}
+
+#bottom {
+    position: center;
+    margin: 20px 20px;
+    font-size: 10px;
+    right: 10px;
+    color: #0f6eac;
+    height:25px;
+    width: 948px;
+    border:1px solid #c7d5dd;
+    background-color: #eef2f6;
+    text-align: right;
+    padding-top: 15px;
+
+}
+
+#left {
+    float: left;
+    padding: 0px;
+    width: 183px;
+    border: 1px solid #E3EAEE;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    text-indent: -20px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+}
+
+#left a {
+    line-height:25px;
+    FONT-SIZE: 13px;
+} 
+
+
+.content {
+    background-color: #ffffff;
+    padding: 0px;
+    margin-left: 250px;
+    margin-right: 20px;
+    min-height: 500px;
+}
+
+
+#bodyContainer {
+    margin: auto;
+    width: 990px;
+    FONT-SIZE: 13px;
+    BORDER-RIGHT: #E3EAEE 2px solid;
+    BORDER-TOP: #E3EAEE 2px solid;
+    BORDER-LEFT: #E3EAEE 2px solid;
+    BORDER-BOTTOM: #E3EAEE 2px solid;
+}
+
+
+
+/* Inhalt */
+body { 
+    height: 100%;
+}
+
+img {
+    border: none;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #690036;
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #A00057;
+}
+
+h2 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #690036;
+    font-size:  14px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #A00057;
+}
+
+a:link, a:visited {
+    color: #304956;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #6A95A9;
+    text-decoration : underline;
+}
+
+.hslubutton {
+    background: none repeat scroll 0 0 #6A95A9;
+    border: 1px solid #304956;
+    width: 80px;
+}
+
+.hslubutton:hover {
+    font-weight: bold;
+}
+
+#message_box {
+    /*    margin-left: 170px;*/
+    border-collapse: collapse;
+}
+.messages td {
+    font-weight: bold;
+    font-size: 14px;
+    width: 600px;
+    padding-left: 25px;
+    height: 24px;
+}
+.messages .infomsg td{
+    color: #00529B;
+    border-color: #00529B;
+    background: url('../images/info.png') no-repeat left center #BDE5F8 ;
+
+}
+.messages .warnmsg td {
+    color: #9F6000;
+    border-color: #9F6000;
+    background: url('../images/important.png') no-repeat left center #FEEFB3;
+}
+.messages .errormsg td {
+    color: #D8000C;
+    border: solid thin #D8000C;
+    background: url('../images/stop.png') no-repeat left #FFBABA;
+}
+
+.transparent {
+    filter:alpha(opacity=60);
+    -moz-opacity: 0.6;
+    opacity: 0.6;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 5px;
+    text-align: left;
+    border: 1px solid black;
+}
