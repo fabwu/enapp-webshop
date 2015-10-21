@@ -78,14 +78,14 @@ public class CustomerDTO implements Serializable {
 
     public PurchaseDTO addPurchas(PurchaseDTO purchas) {
         getPurchases().add(purchas);
-        purchas.setCustomerBean(this);
+        purchas.setCustomer(this);
 
         return purchas;
     }
 
     public PurchaseDTO removePurchas(PurchaseDTO purchas) {
         getPurchases().remove(purchas);
-        purchas.setCustomerBean(null);
+        purchas.setCustomer(null);
 
         return purchas;
     }

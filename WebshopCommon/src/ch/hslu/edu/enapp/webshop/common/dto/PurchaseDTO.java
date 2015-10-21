@@ -13,7 +13,7 @@ public class PurchaseDTO implements Serializable {
 
     private String state;
 
-    private CustomerDTO customerBean;
+    private CustomerDTO customer;
 
     private List<PurchaseitemDTO> purchaseitems;
 
@@ -41,12 +41,12 @@ public class PurchaseDTO implements Serializable {
         this.state = state;
     }
 
-    public CustomerDTO getCustomerBean() {
-        return this.customerBean;
+    public CustomerDTO getCustomer() {
+        return this.customer;
     }
 
-    public void setCustomerBean(CustomerDTO customerBean) {
-        this.customerBean = customerBean;
+    public void setCustomer(CustomerDTO customer) {
+        this.customer = customer;
     }
 
     public List<PurchaseitemDTO> getPurchaseitems() {

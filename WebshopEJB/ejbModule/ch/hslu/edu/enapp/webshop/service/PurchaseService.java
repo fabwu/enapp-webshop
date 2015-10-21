@@ -12,7 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.dto.PurchaseDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseitemDTO;
+import ch.hslu.edu.enapp.webshop.converter.PurchaseConverter;
 import ch.hslu.edu.enapp.webshop.converter.PurchaseitemConverter;
 import ch.hslu.edu.enapp.webshop.entity.Customer;
 import ch.hslu.edu.enapp.webshop.entity.Purchase;
@@ -30,6 +32,9 @@ public class PurchaseService implements PurchaseServiceLocal {
 
     @Inject
     PurchaseitemConverter purchaseitemConverter;
+
+    @Inject
+    PurchaseConverter purchaseConverter;
 
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList) {
@@ -69,4 +74,12 @@ public class PurchaseService implements PurchaseServiceLocal {
         return purchaseitemsWithPurchase;
     }
 
+    @Override
+    public List<PurchaseDTO> getPurchases() {
+        List<Purchase> purchases = entityManager.createNamedQuery("getPurchase", Purchase.class).getResultList();
+        for (Purchase purchase : purchases) {
+            purchase.getPurchaseitems().size();
+        }
+        return purchaseConverter.convertListToDto(purchases);
+    }
 }
