@@ -59,14 +59,12 @@ public class PurchaseDTO implements Serializable {
 
     public PurchaseitemDTO addPurchaseitem(PurchaseitemDTO purchaseitem) {
         getPurchaseitems().add(purchaseitem);
-        purchaseitem.setPurchaseBean(this);
 
         return purchaseitem;
     }
 
     public PurchaseitemDTO removePurchaseitem(PurchaseitemDTO purchaseitem) {
         getPurchaseitems().remove(purchaseitem);
-        purchaseitem.setPurchaseBean(null);
 
         return purchaseitem;
     }

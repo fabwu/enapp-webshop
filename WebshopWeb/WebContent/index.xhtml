@@ -16,16 +16,39 @@
                 <td><b>Name</b></td>
                 <td><b>Beschreibung</b></td>
                 <td><b>Preis</b></td>
+                <td></td>
             </tr>
             <ui:repeat value="#{product.productList}" var="singleProduct">
                 <tr>
                     <td><h:outputText value="#{singleProduct.name}" /></td>
                     <td><h:outputText value="#{singleProduct.description}" /></td>
                     <td><h:outputText value="#{singleProduct.unitprice}" /></td>
+                    <td><h:inputText binding="#{quantityInput}" /> <h:commandButton
+                            value="+"
+                            action="#{cart.addToCart(singleProduct, quantityInput.value)}" /></td>
                 </tr>
             </ui:repeat>
         </table>
-
-
+        <br />
+        <h1>
+            <h:outputFormat value="Shopping Cart" />
+        </h1>
+        <br />
+        <table>
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Menge</b></td>
+                <td><b>Total</b></td>
+            </tr>
+            <ui:repeat value="#{cart.purchaseitemList}" var="purchaseItem">
+                <tr>
+                    <td><h:outputText value="#{purchaseItem.product.name}" /></td>
+                    <td><h:outputText value="#{purchaseItem.quantity}" /></td>
+                    <td><h:outputText value="#{purchaseItem.totalprice}" /></td>
+                </tr>
+            </ui:repeat>
+        </table>
+        <br />
+        <h:commandButton value="Bestellen" action="#{cart.order()}" />
     </ui:define>
 </ui:composition>

@@ -8,15 +8,14 @@ public class PurchaseitemDTO implements Serializable {
 
     private int purchaseitemid;
 
+    // TODO Remove description
     private String description;
 
     private int quantity;
 
-    private BigDecimal unitprice;
+    private BigDecimal totalPrice;
 
-    private ProductDTO productBean;
-
-    private PurchaseDTO purchaseBean;
+    private ProductDTO product;
 
     public int getPurchaseitemid() {
         return this.purchaseitemid;
@@ -42,28 +41,45 @@ public class PurchaseitemDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public BigDecimal getUnitprice() {
-        return this.unitprice;
+    public BigDecimal getTotalprice() {
+        return this.totalPrice;
     }
 
-    public void setUnitprice(BigDecimal unitprice) {
-        this.unitprice = unitprice;
+    public void setTotalprice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public ProductDTO getProductBean() {
-        return this.productBean;
+    public ProductDTO getProduct() {
+        return this.product;
     }
 
-    public void setProductBean(ProductDTO productBean) {
-        this.productBean = productBean;
+    public void setProduct(ProductDTO productBean) {
+        this.product = productBean;
     }
 
-    public PurchaseDTO getPurchaseBean() {
-        return this.purchaseBean;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((product == null) ? 0 : product.hashCode());
+        return result;
     }
 
-    public void setPurchaseBean(PurchaseDTO purchaseBean) {
-        this.purchaseBean = purchaseBean;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PurchaseitemDTO other = (PurchaseitemDTO) obj;
+        if (product == null) {
+            if (other.product != null)
+                return false;
+        } else if (!product.equals(other.product))
+            return false;
+        return true;
     }
 
 }
