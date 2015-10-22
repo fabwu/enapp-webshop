@@ -8,44 +8,48 @@
             <h:outputFormat value="Webshop Home" />
         </h1>
         <br />
-        <table>
-            <tr>
-                <td><b>Name</b></td>
-                <td><b>Beschreibung</b></td>
-                <td><b>Preis</b></td>
-                <td></td>
-            </tr>
-            <ui:repeat value="#{product.productList}" var="singleProduct">
+        <h:form id="product_form" acceptcharset="UTF-8" enctype="application/x-www-form-urlencoded;charset=UTF-8">
+            <table>
                 <tr>
-                    <td><h:outputText value="#{singleProduct.name}" /></td>
-                    <td><h:outputText value="#{singleProduct.description}" /></td>
-                    <td><h:outputText value="#{singleProduct.unitprice}" /></td>
-                    <td><h:inputText binding="#{quantityInput}" /> <h:commandButton value="+"
-                            action="#{cart.addToCart(singleProduct, quantityInput.value)}" /></td>
+                    <td><b>Name</b></td>
+                    <td><b>Beschreibung</b></td>
+                    <td><b>Preis</b></td>
+                    <td></td>
                 </tr>
-            </ui:repeat>
-        </table>
+                <ui:repeat value="#{product.productList}" var="singleProduct">
+                    <tr>
+                        <td><h:outputText value="#{singleProduct.name}" /></td>
+                        <td><h:outputText value="#{singleProduct.description}" /></td>
+                        <td><h:outputText value="#{singleProduct.unitprice}" /></td>
+                        <td><h:inputText binding="#{quantityInput}" /> <h:commandButton value="+"
+                                action="#{cart.addToCart(singleProduct, quantityInput.value)}" /></td>
+                    </tr>
+                </ui:repeat>
+            </table>
+        </h:form>
         <br />
         <h1>
             <h:outputFormat value="Warenkorb" />
         </h1>
         <br />
-        <table>
-            <tr>
-                <td><b>Name</b></td>
-                <td><b>Menge</b></td>
-                <td><b>Total</b></td>
-            </tr>
-            <ui:repeat value="#{cart.purchaseitemList}" var="purchaseItem">
+        <h:form id="purchase_form" acceptcharset="UTF-8" enctype="application/x-www-form-urlencoded;charset=UTF-8">
+            <table>
                 <tr>
-                    <td><h:outputText value="#{purchaseItem.product.name}" /></td>
-                    <td><h:outputText value="#{purchaseItem.quantity}" /></td>
-                    <td><h:outputText value="#{purchaseItem.totalprice}" /></td>
+                    <td><b>Name</b></td>
+                    <td><b>Menge</b></td>
+                    <td><b>Total</b></td>
                 </tr>
-            </ui:repeat>
-        </table>
-        <br />
-        <h:commandButton value="Bestellen" action="#{cart.order()}" />
+                <ui:repeat value="#{cart.purchaseitemList}" var="purchaseItem">
+                    <tr>
+                        <td><h:outputText value="#{purchaseItem.product.name}" /></td>
+                        <td><h:outputText value="#{purchaseItem.quantity}" /></td>
+                        <td><h:outputText value="#{purchaseItem.totalprice}" /></td>
+                    </tr>
+                </ui:repeat>
+            </table>
+            <br />
+            <h:commandButton value="Bestellen" action="#{cart.order()}" />
+        </h:form>
         <br />
         <br />
         <h1>
@@ -65,12 +69,10 @@
                     <td>
                         <ul>
                             <ui:repeat value="#{singlePurchase.purchaseitems}" var="purchaseitem">
-                                <li>
-                                    <h:outputText value="#{purchaseitem.product.name}" /><h:outputText value="&#160;" />
-                                    <h:outputText value="#{purchaseitem.quantity}" />x 
-                                    <h:outputText value="#{purchaseitem.product.unitprice}" />= 
-                                    <h:outputText value="#{purchaseitem.totalprice}" />
-                               </li>
+                                <li><h:outputText value="#{purchaseitem.product.name}" /> <h:outputText
+                                        value="&#160;" /> <h:outputText value="#{purchaseitem.quantity}" />x <h:outputText
+                                        value="#{purchaseitem.product.unitprice}" />= <h:outputText
+                                        value="#{purchaseitem.totalprice}" /></li>
                             </ui:repeat>
 
                         </ul>
@@ -80,6 +82,5 @@
                 </tr>
             </ui:repeat>
         </table>
-        <br />
     </ui:define>
 </ui:composition>
