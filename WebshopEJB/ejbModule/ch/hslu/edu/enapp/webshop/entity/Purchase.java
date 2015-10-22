@@ -28,7 +28,7 @@ import javax.persistence.OneToMany;
         @NamedQuery(name = "getPurchaseByState", query = "SELECT p FROM Purchase p WHERE p.state = :state"),
         @NamedQuery(name = "getPurchaseByDatetime", query = "SELECT p FROM Purchase p WHERE p.datetime = :datetime"),
         @NamedQuery(name = "getPurchaseByPurchaseid", query = "SELECT p FROM Purchase p WHERE p.purchaseid = :purchaseid"),
-        @NamedQuery(name = "getPurchase", query = "SELECT p FROM Purchase p") })
+        @NamedQuery(name = "getPurchase", query = "SELECT p FROM Purchase p ORDER BY p.datetime DESC") })
 public class Purchase implements Serializable {
     private static final long serialVersionUID = 1L;
 
