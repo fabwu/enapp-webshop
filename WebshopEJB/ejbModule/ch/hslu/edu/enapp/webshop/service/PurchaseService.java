@@ -12,11 +12,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseitemDTO;
+import ch.hslu.edu.enapp.webshop.converter.CustomerConverter;
 import ch.hslu.edu.enapp.webshop.converter.PurchaseConverter;
 import ch.hslu.edu.enapp.webshop.converter.PurchaseitemConverter;
-import ch.hslu.edu.enapp.webshop.entity.Customer;
 import ch.hslu.edu.enapp.webshop.entity.Purchase;
 import ch.hslu.edu.enapp.webshop.entity.Purchaseitem;
 
@@ -31,15 +32,18 @@ public class PurchaseService implements PurchaseServiceLocal {
     EntityManager entityManager;
 
     @Inject
+    CustomerConverter customerConverter;
+
+    @Inject
     PurchaseitemConverter purchaseitemConverter;
 
     @Inject
     PurchaseConverter purchaseConverter;
 
     @Override
-    public void order(List<PurchaseitemDTO> purchaseitemDtoList) {
+    public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
         Purchase purchase = new Purchase();
-        purchase.setCustomer(getDummyCustomer());
+        purchase.setCustomer(customerConverter.convertToEntity(customerDTO));
         purchase.setState("A");
         purchase.setDatetime(getCurrentTimestamp());
 
@@ -50,13 +54,6 @@ public class PurchaseService implements PurchaseServiceLocal {
         purchase.setPurchaseitems(purchaseitemList);
 
         entityManager.flush();
-    }
-
-    private Customer getDummyCustomer() {
-        Customer customer = entityManager.createNamedQuery("getCustomerByUsername", Customer.class)
-                .setParameter("username", "muster").getSingleResult();
-
-        return customer;
     }
 
     private Timestamp getCurrentTimestamp() {
@@ -82,4 +79,5 @@ public class PurchaseService implements PurchaseServiceLocal {
         }
         return purchaseConverter.convertListToDto(purchases);
     }
+
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" template="/resources/templates/secured_template.xhtml">
+    xmlns:c="http://java.sun.com/jsp/jstl/core" template="resources/templates/template.xhtml">
 
     <ui:define name="content">
         <h1>
-            <h:outputFormat value="EatMe Home" />
+            <h:outputFormat value="Warenkorb" />
         </h1>
         <br />
         <h:form id="purchase_form" acceptcharset="UTF-8" enctype="application/x-www-form-urlencoded;charset=UTF-8">
@@ -24,7 +24,10 @@
                 </ui:repeat>
             </table>
             <br />
-            <h:commandButton value="Bestellung abschicken" action="#{cart.order()}" />
+            <h:commandButton rendered="#{customer.currentCustomer!=null}" value="Bestellen" action="#{cart.order()}" />
+            <h:panelGroup rendered="#{customer.currentCustomer==null}" layout="block">
+                Bitte melde dich an um zu bestellen...
+            </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>

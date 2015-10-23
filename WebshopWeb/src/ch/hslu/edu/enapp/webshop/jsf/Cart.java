@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ch.hslu.edu.enapp.webshop.common.CustomerServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.ShoppingCartServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseitemDTO;
-import ch.hslu.edu.enapp.webshop.service.PurchaseService;
 
 @Named
 @SessionScoped
@@ -22,7 +25,10 @@ public class Cart implements Serializable {
     ShoppingCartServiceLocal shoppingCartService;
 
     @Inject
-    PurchaseService purchaseService;
+    CustomerServiceLocal customerService;
+
+    @Inject
+    PurchaseServiceLocal purchaseService;
 
     private List<PurchaseitemDTO> purchaseitemList;
 
@@ -38,8 +44,14 @@ public class Cart implements Serializable {
     }
 
     public void order() {
-        purchaseService.order(getPurchaseitemList());
-        shoppingCartService.clear();
+        List<PurchaseitemDTO> purchaseItems = getPurchaseitemList();
+        if (!purchaseItems.isEmpty()) {
+            purchaseService.order(purchaseItems, customerService.getCurrentCustomer());
+            shoppingCartService.clear();
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Warenkorb ist leer!", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public List<PurchaseitemDTO> getPurchaseitemList() {
