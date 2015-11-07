@@ -13,6 +13,9 @@ import ch.hslu.edu.enapp.webshop.common.ProductServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
 import ch.hslu.edu.enapp.webshop.converter.ProductConverter;
 import ch.hslu.edu.enapp.webshop.entity.Product;
+import ch.hslu.edu.enapp.webshop.webservice.Item;
+import ch.hslu.edu.enapp.webshop.webservice.ItemList;
+import ch.hslu.edu.enapp.webshop.webservice.ItemService;
 
 /**
  * Session Bean implementation class ProductService
@@ -29,8 +32,15 @@ public class ProductService implements ProductServiceLocal {
 
     @Override
     public List<ProductDTO> getAll() {
-        List<Product> productList = entityManager.createNamedQuery(
-                "getProduct", Product.class).getResultList();
+        ItemService itemService = new ItemService();
+
+        ItemList itemList = itemService.getItemPort().readMultiple(null, null, 0);
+
+        for (Item it : itemList.getItem()) {
+            System.out.println(it.getDescription());
+        }
+
+        List<Product> productList = entityManager.createNamedQuery("getProduct", Product.class).getResultList();
         ArrayList<ProductDTO> productDTOList = new ArrayList<>();
 
         for (Product product : productList) {
