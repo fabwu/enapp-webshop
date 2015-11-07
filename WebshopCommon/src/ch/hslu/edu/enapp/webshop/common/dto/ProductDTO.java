@@ -6,22 +6,24 @@ import java.math.BigDecimal;
 public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int productid;
+    private String no;
 
     private String description;
 
     private String mediapath;
 
-    private String name;
+    private String owner;
+
+    private String kind;
 
     private BigDecimal unitprice;
 
-    public int getProductid() {
-        return this.productid;
+    public String getNo() {
+        return this.no;
     }
 
-    public void setProductid(int productid) {
-        this.productid = productid;
+    public void setNo(String no) {
+        this.no = no;
     }
 
     public String getDescription() {
@@ -40,12 +42,20 @@ public class ProductDTO implements Serializable {
         this.mediapath = mediapath;
     }
 
-    public String getName() {
-        return this.name;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public BigDecimal getUnitprice() {
@@ -60,8 +70,7 @@ public class ProductDTO implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + productid;
+        result = prime * result + ((no == null) ? 0 : no.hashCode());
         return result;
     }
 
@@ -74,14 +83,18 @@ public class ProductDTO implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         ProductDTO other = (ProductDTO) obj;
-        if (name == null) {
-            if (other.name != null)
+        if (no == null) {
+            if (other.no != null)
                 return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (productid != other.productid)
+        } else if (!no.equals(other.no))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDTO [no=" + no + ", description=" + description + ", mediapath=" + mediapath + ", owner=" + owner
+                + ", kind=" + kind + ", unitprice=" + unitprice + "]";
     }
 
 }

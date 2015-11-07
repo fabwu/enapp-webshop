@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
 
 @Local
-public interface ProductServiceLocal {
+public interface ProdcutServiceLocal {
 
     List<ProductDTO> getAll();
 

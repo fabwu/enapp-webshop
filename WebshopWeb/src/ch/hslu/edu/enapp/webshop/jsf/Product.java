@@ -7,7 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ch.hslu.edu.enapp.webshop.common.ProductServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.ProdcutServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
 
 @Named
@@ -17,13 +17,10 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    ProductServiceLocal productService;
-
-    private List<ProductDTO> productList;
+    ProdcutServiceLocal productService;
 
     public List<ProductDTO> getProductList() {
-        productList = productService.getAll();
-        return productList;
+        return productService.getAll();
     }
 
 }

@@ -1,6 +1,7 @@
 package ch.hslu.edu.enapp.webshop.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -9,11 +10,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ch.hslu.edu.enapp.webshop.common.ProductServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.ProdcutServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
-import ch.hslu.edu.enapp.webshop.converter.ProductConverter;
-import ch.hslu.edu.enapp.webshop.entity.Product;
+import ch.hslu.edu.enapp.webshop.converter.ProductItemConverter;
 import ch.hslu.edu.enapp.webshop.webservice.Item;
+import ch.hslu.edu.enapp.webshop.webservice.ItemFields;
+import ch.hslu.edu.enapp.webshop.webservice.ItemFilter;
 import ch.hslu.edu.enapp.webshop.webservice.ItemList;
 import ch.hslu.edu.enapp.webshop.webservice.ItemService;
 
@@ -22,29 +24,29 @@ import ch.hslu.edu.enapp.webshop.webservice.ItemService;
  */
 @Stateless
 @LocalBean
-public class ProductService implements ProductServiceLocal {
+public class ProductService implements ProdcutServiceLocal {
 
     @PersistenceContext
     EntityManager entityManager;
 
     @Inject
-    ProductConverter productConverter;
+    ProductItemConverter productConverter;
+
+    @Inject
+    ItemService itemService;
 
     @Override
     public List<ProductDTO> getAll() {
-        ItemService itemService = new ItemService();
+        ItemFilter itemFilter = new ItemFilter();
+        itemFilter.setCriteria("MP3");
+        itemFilter.setField(ItemFields.PRODUCT_GROUP_CODE);
 
-        ItemList itemList = itemService.getItemPort().readMultiple(null, null, 0);
+        ItemList itemList = itemService.getItemPort().readMultiple(Collections.singletonList(itemFilter), null, 0);
 
-        for (Item it : itemList.getItem()) {
-            System.out.println(it.getDescription());
-        }
-
-        List<Product> productList = entityManager.createNamedQuery("getProduct", Product.class).getResultList();
         ArrayList<ProductDTO> productDTOList = new ArrayList<>();
 
-        for (Product product : productList) {
-            ProductDTO dto = productConverter.convertToDto(product);
+        for (Item item : itemList.getItem()) {
+            ProductDTO dto = productConverter.convertToProductDTO(item);
             productDTOList.add(dto);
         }
 
