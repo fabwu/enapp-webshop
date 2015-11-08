@@ -1,18 +1,29 @@
 package ch.hslu.edu.enapp.webshop.service;
 
+import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
 import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
@@ -23,6 +34,9 @@ import ch.hslu.edu.enapp.webshop.converter.PurchaseConverter;
 import ch.hslu.edu.enapp.webshop.converter.PurchaseitemConverter;
 import ch.hslu.edu.enapp.webshop.entity.Purchase;
 import ch.hslu.edu.enapp.webshop.entity.Purchaseitem;
+import ch.hslu.edu.enapp.webshop.message.CustomerMessage;
+import ch.hslu.edu.enapp.webshop.message.LineMessage;
+import ch.hslu.edu.enapp.webshop.message.PurchaseMessage;
 
 /**
  * Session Bean implementation class Purchase
@@ -30,6 +44,8 @@ import ch.hslu.edu.enapp.webshop.entity.Purchaseitem;
 @Stateless
 @LocalBean
 public class PurchaseService implements PurchaseServiceLocal {
+
+    private static final String STUDENT = "tdwuethr";
 
     @Resource(name = "EnappQueueConnectionFactory")
     private ConnectionFactory connectionFactory;
@@ -51,18 +67,88 @@ public class PurchaseService implements PurchaseServiceLocal {
 
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
-        Purchase purchase = new Purchase();
-        purchase.setCustomer(customerConverter.convertToEntity(customerDTO));
-        purchase.setState("A");
-        purchase.setDatetime(getCurrentTimestamp());
+        PurchaseMessage purchaseMessage = new PurchaseMessage();
+        purchaseMessage.setPayId("123");
+        purchaseMessage.setPurchaseId(123);
+        purchaseMessage.setStudent(STUDENT);
+        purchaseMessage.setTotalPrice(new BigDecimal(10));
+        purchaseMessage.setDate(new Date());
 
-        entityManager.persist(purchase);
+        CustomerMessage customerMessage = new CustomerMessage();
+        customerMessage.setDynNavCustNo("Test");
+        customerMessage.setName("Fabian");
+        customerMessage.setAddress("BlaBla Strasse");
+        customerMessage.setPostCode("4460");
+        customerMessage.setCity("Gelterkinden");
+        customerMessage.setShopLoginname("fabian");
+        purchaseMessage.setCustomer(customerMessage);
 
-        List<Purchaseitem> purchaseitemList = addPurchase(
-                purchaseitemConverter.convertListToEntity(purchaseitemDtoList), purchase);
-        purchase.setPurchaseitems(purchaseitemList);
+        LineMessage lineMessage = new LineMessage();
+        lineMessage.setMsDynNAVItemNo("123Test");
+        lineMessage.setDescription("BlaBla");
+        lineMessage.setQuantity(100);
+        lineMessage.setTotalLinePrice(new BigDecimal(1000));
+        purchaseMessage.addLine(lineMessage);
+        purchaseMessage.addLine(lineMessage);
 
-        entityManager.flush();
+        String correlationId = sendMsg(purchaseMessage);
+        System.out.println(correlationId);
+
+        // Purchase purchase = new Purchase();
+        // purchase.setCustomer(customerConverter.convertToEntity(customerDTO));
+        // purchase.setState("A");
+        // purchase.setDatetime(getCurrentTimestamp());
+        //
+        // entityManager.persist(purchase);
+        //
+        // List<Purchaseitem> purchaseitemList = addPurchase(
+        // purchaseitemConverter.convertListToEntity(purchaseitemDtoList), purchase);
+        // purchase.setPurchaseitems(purchaseitemList);
+        //
+        // entityManager.flush();
+    }
+
+    private String sendMsg(PurchaseMessage purchaseMessage) {
+        String correlationId = "";
+
+        try {
+            Connection connection = connectionFactory.createConnection();
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            MessageProducer messageProducer = session.createProducer(queue);
+
+            String purchaseMessageText = getPurchaseMessageAsString(purchaseMessage);
+
+            TextMessage textMessage = session.createTextMessage(purchaseMessageText);
+            textMessage.setStringProperty("MessageFormat", "Version 1.5");
+            correlationId = UUID.randomUUID().toString();
+            textMessage.setJMSCorrelationID(correlationId);
+
+            messageProducer.send(textMessage);
+        } catch (JMSException e) {
+            e.printStackTrace();
+            correlationId = "";
+        }
+
+        return correlationId;
+    }
+
+    private String getPurchaseMessageAsString(PurchaseMessage purchaseMessage) {
+        String purchaseMessageText = "";
+
+        try {
+            // TODO Inject this shit!
+            JAXBContext jaxbContext = JAXBContext.newInstance(PurchaseMessage.class);
+            StringWriter writer = new StringWriter();
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(purchaseMessage, writer);
+            purchaseMessageText = writer.toString();
+            System.out.println(purchaseMessageText);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return purchaseMessageText;
     }
 
     private Timestamp getCurrentTimestamp() {

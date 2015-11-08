@@ -17,7 +17,7 @@
                 </tr>
                 <ui:repeat value="#{cart.purchaseitemList}" var="purchaseItem">
                     <tr>
-                        <td><h:outputText value="#{purchaseItem.product.name}" /></td>
+                        <td><h:outputText value="#{purchaseItem.product.description}" /></td>
                         <td><h:outputText value="#{purchaseItem.quantity}" /></td>
                         <td><h:outputText value="#{purchaseItem.totalprice}" /></td>
                     </tr>
