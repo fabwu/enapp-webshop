@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -27,6 +30,12 @@ import ch.hslu.edu.enapp.webshop.entity.Purchaseitem;
 @Stateless
 @LocalBean
 public class PurchaseService implements PurchaseServiceLocal {
+
+    @Resource(name = "EnappQueueConnectionFactory")
+    private ConnectionFactory connectionFactory;
+
+    @Resource(name = "EnappQueue")
+    private Queue queue;
 
     @PersistenceContext
     EntityManager entityManager;
