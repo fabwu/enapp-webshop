@@ -7,8 +7,6 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ch.hslu.edu.enapp.webshop.common.ProdcutServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
@@ -25,9 +23,6 @@ import ch.hslu.edu.enapp.webshop.webservice.ItemService;
 @Stateless
 @LocalBean
 public class ProductService implements ProdcutServiceLocal {
-
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Inject
     ProductItemConverter productConverter;
