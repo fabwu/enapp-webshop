@@ -67,6 +67,7 @@ public class PurchaseService implements PurchaseServiceLocal {
 
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
+
         PurchaseMessage purchaseMessage = new PurchaseMessage();
         purchaseMessage.setPayId("123");
         purchaseMessage.setPurchaseId(123);
@@ -75,7 +76,6 @@ public class PurchaseService implements PurchaseServiceLocal {
         purchaseMessage.setDate(new Date());
 
         CustomerMessage customerMessage = new CustomerMessage();
-        customerMessage.setDynNavCustNo("Test");
         customerMessage.setName("Fabian");
         customerMessage.setAddress("BlaBla Strasse");
         customerMessage.setPostCode("4460");
@@ -84,7 +84,7 @@ public class PurchaseService implements PurchaseServiceLocal {
         purchaseMessage.setCustomer(customerMessage);
 
         LineMessage lineMessage = new LineMessage();
-        lineMessage.setMsDynNAVItemNo("123Test");
+        lineMessage.setMsDynNAVItemNo("ART0000224");
         lineMessage.setDescription("BlaBla");
         lineMessage.setQuantity(100);
         lineMessage.setTotalLinePrice(new BigDecimal(1000));

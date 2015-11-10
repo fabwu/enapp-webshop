@@ -8,6 +8,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import ch.hslu.edu.enapp.webshop.common.PaymentServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.ProdcutServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.ProductDTO;
 import ch.hslu.edu.enapp.webshop.converter.ProductItemConverter;
@@ -30,8 +31,13 @@ public class ProductService implements ProdcutServiceLocal {
     @Inject
     ItemService itemService;
 
+    @Inject
+    PaymentServiceLocal paymentService;
+
     @Override
     public List<ProductDTO> getAll() {
+        paymentService.sendRequest();
+
         ItemFilter itemFilter = new ItemFilter();
         itemFilter.setCriteria("MP3");
         itemFilter.setField(ItemFields.PRODUCT_GROUP_CODE);
