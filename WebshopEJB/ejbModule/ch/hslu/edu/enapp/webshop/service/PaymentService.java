@@ -24,7 +24,6 @@ public class PaymentService implements PaymentServiceLocal {
     private final String CURRENCY = "CHF";
     private final String CVC = "123";
     private final String ED = "10/18";
-    private final String ORDERID = "456";
     private final String PSPID = "HSLUiCompany";
     private final String PSWD = "ds2H9ZV.p!8r";
     private final String USERID = "enappstudents";
@@ -32,21 +31,24 @@ public class PaymentService implements PaymentServiceLocal {
     private final String SHA_PASSPHRASE = "hslu!comp@ny.websh0p";
 
     @Override
-    public void sendRequest() {
+    public String sendRequest(String orderId) {
         RestClient client = new RestClient();
         Resource webResource = client.resource("https://e-payment.postfinance.ch/ncol/test/orderdirect.asp");
 
-        String shasign = getShasign();
+        String shasign = getShasign(orderId);
 
-        String params = getParams(shasign);
+        String params = getParams(orderId, shasign);
 
         ClientResponse response = webResource.accept("application/x-www-form-urlencoded").post(ClientResponse.class,
                 params);
 
-        System.out.println(response.getEntity(String.class));
+        String string = response.getEntity(String.class);
+        String paymentId = string.split("PAYID=")[1].substring(1, 9);
+
+        return paymentId;
     }
 
-    private String getParams(String shasign) {
+    private String getParams(String orderId, String shasign) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("AMOUNT=" + AMOUNT + "&");
@@ -54,7 +56,7 @@ public class PaymentService implements PaymentServiceLocal {
         builder.append("CURRENCY=" + CURRENCY + "&");
         builder.append("CVC=" + CVC + "&");
         builder.append("ED=" + ED + "&");
-        builder.append("ORDERID=" + ORDERID + "&");
+        builder.append("ORDERID=" + orderId + "&");
         builder.append("PSPID=" + PSPID + "&");
         builder.append("PSWD=" + PSWD + "&");
         builder.append("USERID=" + USERID + "&");
@@ -63,7 +65,7 @@ public class PaymentService implements PaymentServiceLocal {
         return builder.toString();
     }
 
-    private String getShasign() {
+    private String getShasign(String orderId) {
         final StringBuilder builder = new StringBuilder();
 
         builder.append("AMOUNT=" + AMOUNT + SHA_PASSPHRASE);
@@ -71,7 +73,7 @@ public class PaymentService implements PaymentServiceLocal {
         builder.append("CURRENCY=" + CURRENCY + SHA_PASSPHRASE);
         builder.append("CVC=" + CVC + SHA_PASSPHRASE);
         builder.append("ED=" + ED + SHA_PASSPHRASE);
-        builder.append("ORDERID=" + ORDERID + SHA_PASSPHRASE);
+        builder.append("ORDERID=" + orderId + SHA_PASSPHRASE);
         builder.append("PSPID=" + PSPID + SHA_PASSPHRASE);
         builder.append("PSWD=" + PSWD + SHA_PASSPHRASE);
         builder.append("USERID=" + USERID + SHA_PASSPHRASE);

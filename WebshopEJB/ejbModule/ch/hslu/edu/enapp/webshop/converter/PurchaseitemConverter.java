@@ -18,9 +18,7 @@ public class PurchaseitemConverter implements Serializable {
 
     public Purchaseitem convertToEntity(PurchaseitemDTO dto) {
         Purchaseitem purchaseitem = new Purchaseitem();
-        purchaseitem.setDescription(dto.getDescription());
-        // Product product = productConverter.convertToEntity(dto.getProduct());
-        // purchaseitem.setProduct(product);
+        purchaseitem.setItemNo(dto.getProduct().getNo());
         purchaseitem.setPurchaseitemid(dto.getPurchaseitemid());
         purchaseitem.setQuantity(dto.getQuantity());
         purchaseitem.setUnitprice(dto.getTotalprice());
@@ -29,9 +27,7 @@ public class PurchaseitemConverter implements Serializable {
 
     public PurchaseitemDTO convertToDto(Purchaseitem purchaseitem) {
         PurchaseitemDTO dto = new PurchaseitemDTO();
-        dto.setDescription(purchaseitem.getDescription());
-        // ProductDTO productDTO = productConverter.convertToDto(purchaseitem.getProduct());
-        // dto.setProduct(productDTO);
+        dto.setItemNo(purchaseitem.getItemNo());
         dto.setPurchaseitemid(purchaseitem.getPurchaseitemid());
         dto.setQuantity(purchaseitem.getQuantity());
         dto.setTotalprice(purchaseitem.getUnitprice());

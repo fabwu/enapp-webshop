@@ -25,6 +25,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import ch.hslu.edu.enapp.webshop.common.PaymentServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseDTO;
@@ -65,47 +66,57 @@ public class PurchaseService implements PurchaseServiceLocal {
     @Inject
     PurchaseConverter purchaseConverter;
 
+    @Inject
+    PaymentServiceLocal paymentService;
+
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
 
+        int purchaseId = persistPurchase(customerDTO, purchaseitemDtoList);
+
+        String payId = paymentService.sendRequest(String.valueOf(purchaseId));
+
         PurchaseMessage purchaseMessage = new PurchaseMessage();
-        purchaseMessage.setPayId("123");
-        purchaseMessage.setPurchaseId(123);
+        purchaseMessage.setPayId(payId);
+        purchaseMessage.setPurchaseId(purchaseId);
         purchaseMessage.setStudent(STUDENT);
+        // TODO Set Total Price
         purchaseMessage.setTotalPrice(new BigDecimal(10));
         purchaseMessage.setDate(new Date());
 
         CustomerMessage customerMessage = new CustomerMessage();
-        customerMessage.setName("Fabian");
-        customerMessage.setAddress("BlaBla Strasse");
-        customerMessage.setPostCode("4460");
-        customerMessage.setCity("Gelterkinden");
-        customerMessage.setShopLoginname("fabian");
+        customerMessage.setName(customerDTO.getName());
+        customerMessage.setAddress(customerDTO.getAddress());
+        customerMessage.setShopLoginname(customerDTO.getUsername());
         purchaseMessage.setCustomer(customerMessage);
 
-        LineMessage lineMessage = new LineMessage();
-        lineMessage.setMsDynNAVItemNo("ART0000224");
-        lineMessage.setDescription("BlaBla");
-        lineMessage.setQuantity(100);
-        lineMessage.setTotalLinePrice(new BigDecimal(1000));
-        purchaseMessage.addLine(lineMessage);
-        purchaseMessage.addLine(lineMessage);
+        for (PurchaseitemDTO purchaseitemDTO : purchaseitemDtoList) {
+            LineMessage lineMessage = new LineMessage();
+            lineMessage.setMsDynNAVItemNo(purchaseitemDTO.getProduct().getNo());
+            lineMessage.setQuantity(purchaseitemDTO.getQuantity());
+            lineMessage.setTotalLinePrice(purchaseitemDTO.getTotalprice());
+            purchaseMessage.addLine(lineMessage);
+        }
 
         String correlationId = sendMsg(purchaseMessage);
         System.out.println(correlationId);
+    }
 
-        // Purchase purchase = new Purchase();
-        // purchase.setCustomer(customerConverter.convertToEntity(customerDTO));
-        // purchase.setState("A");
-        // purchase.setDatetime(getCurrentTimestamp());
-        //
-        // entityManager.persist(purchase);
-        //
-        // List<Purchaseitem> purchaseitemList = addPurchase(
-        // purchaseitemConverter.convertListToEntity(purchaseitemDtoList), purchase);
-        // purchase.setPurchaseitems(purchaseitemList);
-        //
-        // entityManager.flush();
+    private int persistPurchase(CustomerDTO customerDTO, List<PurchaseitemDTO> purchaseitemDtoList) {
+        Purchase purchase = new Purchase();
+        purchase.setCustomer(customerConverter.convertToEntity(customerDTO));
+        purchase.setState("999");
+        purchase.setDatetime(getCurrentTimestamp());
+
+        entityManager.persist(purchase);
+
+        List<Purchaseitem> purchaseitemList = addPurchase(
+                purchaseitemConverter.convertListToEntity(purchaseitemDtoList), purchase);
+        purchase.setPurchaseitems(purchaseitemList);
+
+        entityManager.flush();
+
+        return purchase.getPurchaseid();
     }
 
     private String sendMsg(PurchaseMessage purchaseMessage) {

@@ -3,7 +3,6 @@ package ch.hslu.edu.enapp.webshop.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,14 +19,13 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 
-        @NamedQuery(name = "getPurchaseitemByPurchaseBean", query = "SELECT p FROM Purchaseitem p WHERE p.purchase.purchaseid = :purchase_purchaseid"),
+    @NamedQuery(name = "getPurchaseitemByPurchaseBean", query = "SELECT p FROM Purchaseitem p WHERE p.purchase.purchaseid = :purchase_purchaseid"),
 
-        @NamedQuery(name = "getPurchaseitemByProductBean", query = "SELECT p FROM Purchaseitem p WHERE p.product.productid = :product_productid"),
-        @NamedQuery(name = "getPurchaseitemByUnitprice", query = "SELECT p FROM Purchaseitem p WHERE p.unitprice = :unitprice"),
-        @NamedQuery(name = "getPurchaseitemByQuantity", query = "SELECT p FROM Purchaseitem p WHERE p.quantity = :quantity"),
-        @NamedQuery(name = "getPurchaseitemByDescription", query = "SELECT p FROM Purchaseitem p WHERE p.description = :description"),
-        @NamedQuery(name = "getPurchaseitemByPurchaseitemid", query = "SELECT p FROM Purchaseitem p WHERE p.purchaseitemid = :purchaseitemid"),
-        @NamedQuery(name = "getPurchaseitem", query = "SELECT p FROM Purchaseitem p") })
+    @NamedQuery(name = "getPurchaseitemByUnitprice", query = "SELECT p FROM Purchaseitem p WHERE p.unitprice = :unitprice"),
+    @NamedQuery(name = "getPurchaseitemByQuantity", query = "SELECT p FROM Purchaseitem p WHERE p.quantity = :quantity"),
+    @NamedQuery(name = "getPurchaseitemByDescription", query = "SELECT p FROM Purchaseitem p WHERE p.itemNo = :itemNo"),
+    @NamedQuery(name = "getPurchaseitemByPurchaseitemid", query = "SELECT p FROM Purchaseitem p WHERE p.purchaseitemid = :purchaseitemid"),
+    @NamedQuery(name = "getPurchaseitem", query = "SELECT p FROM Purchaseitem p") })
 public class Purchaseitem implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -35,16 +33,11 @@ public class Purchaseitem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int purchaseitemid;
 
-    private String description;
+    private String itemNo;
 
     private int quantity;
 
     private BigDecimal unitprice;
-
-    // bi-directional many-to-one association to Product
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "PRODUCT")
-    private Product product;
 
     // bi-directional many-to-one association to Purchase
     @ManyToOne
@@ -62,12 +55,12 @@ public class Purchaseitem implements Serializable {
         this.purchaseitemid = purchaseitemid;
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getItemNo() {
+        return this.itemNo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemNo(String itemNo) {
+        this.itemNo = itemNo;
     }
 
     public int getQuantity() {
@@ -84,14 +77,6 @@ public class Purchaseitem implements Serializable {
 
     public void setUnitprice(BigDecimal unitprice) {
         this.unitprice = unitprice;
-    }
-
-    public Product getProduct() {
-        return this.product;
-    }
-
-    public void setProduct(Product productBean) {
-        this.product = productBean;
     }
 
     public Purchase getPurchase() {

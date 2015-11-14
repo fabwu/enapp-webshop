@@ -5,6 +5,6 @@ import javax.ejb.Local;
 @Local
 public interface PaymentServiceLocal {
 
-    void sendRequest();
+    String sendRequest(String orderId);
 
 }

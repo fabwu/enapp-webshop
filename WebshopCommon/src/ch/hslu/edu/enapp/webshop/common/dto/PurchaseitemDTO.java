@@ -8,8 +8,7 @@ public class PurchaseitemDTO implements Serializable {
 
     private int purchaseitemid;
 
-    // TODO Remove description
-    private String description;
+    private String itemNo;
 
     private int quantity;
 
@@ -25,12 +24,12 @@ public class PurchaseitemDTO implements Serializable {
         this.purchaseitemid = purchaseitemid;
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getItemNo() {
+        return this.itemNo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemNo(String itemNo) {
+        this.itemNo = itemNo;
     }
 
     public int getQuantity() {
@@ -80,6 +79,12 @@ public class PurchaseitemDTO implements Serializable {
         } else if (!product.equals(other.product))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PurchaseitemDTO [purchaseitemid=" + purchaseitemid + ", description=" + itemNo + ", quantity="
+                + quantity + ", totalPrice=" + totalPrice + ", product=" + product + "]";
     }
 
 }
