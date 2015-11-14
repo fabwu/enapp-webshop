@@ -23,18 +23,20 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 
-        @NamedQuery(name = "getPurchaseByCustomerBean", query = "SELECT p FROM Purchase p WHERE p.customer.customerid = :customer_customerid"),
+    @NamedQuery(name = "getPurchaseByCustomerBean", query = "SELECT p FROM Purchase p WHERE p.customer.customerid = :customer_customerid"),
 
-        @NamedQuery(name = "getPurchaseByState", query = "SELECT p FROM Purchase p WHERE p.state = :state"),
-        @NamedQuery(name = "getPurchaseByDatetime", query = "SELECT p FROM Purchase p WHERE p.datetime = :datetime"),
-        @NamedQuery(name = "getPurchaseByPurchaseid", query = "SELECT p FROM Purchase p WHERE p.purchaseid = :purchaseid"),
-        @NamedQuery(name = "getPurchase", query = "SELECT p FROM Purchase p ORDER BY p.datetime DESC") })
+    @NamedQuery(name = "getPurchaseByState", query = "SELECT p FROM Purchase p WHERE p.state = :state"),
+    @NamedQuery(name = "getPurchaseByDatetime", query = "SELECT p FROM Purchase p WHERE p.datetime = :datetime"),
+    @NamedQuery(name = "getPurchaseByPurchaseid", query = "SELECT p FROM Purchase p WHERE p.purchaseid = :purchaseid"),
+    @NamedQuery(name = "getPurchase", query = "SELECT p FROM Purchase p ORDER BY p.datetime DESC") })
 public class Purchase implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int purchaseid;
+
+    private String messageid;
 
     private Timestamp datetime;
 
@@ -54,6 +56,14 @@ public class Purchase implements Serializable {
 
     public void setPurchaseid(int purchaseid) {
         this.purchaseid = purchaseid;
+    }
+
+    public String getMessageid() {
+        return messageid;
+    }
+
+    public void setMessageid(String messageid) {
+        this.messageid = messageid;
     }
 
     public Timestamp getDatetime() {
