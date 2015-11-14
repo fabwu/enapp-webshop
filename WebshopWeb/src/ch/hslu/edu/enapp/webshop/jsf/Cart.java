@@ -37,6 +37,9 @@ public class Cart implements Serializable {
             Integer quantity = Integer.valueOf(input);
             if (quantity > 0) {
                 shoppingCartService.addProduct(product, quantity);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Artikel zum Warenkorb hinzugefügt!", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -48,6 +51,9 @@ public class Cart implements Serializable {
         if (!purchaseItems.isEmpty()) {
             purchaseService.order(purchaseItems, customerService.getCurrentCustomer());
             shoppingCartService.clear();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Deine Bestellung wurde erfolgreich abgeschickt!", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Warenkorb ist leer!", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
