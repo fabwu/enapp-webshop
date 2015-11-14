@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ch.hslu.edu.enapp.webshop.common.CustomerServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.EnappQueueLocal;
 import ch.hslu.edu.enapp.webshop.common.PaymentServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.PurchaseServiceLocal;
@@ -48,6 +49,9 @@ public class PurchaseService implements PurchaseServiceLocal {
     @Inject
     EnappQueueLocal enappQueue;
 
+    @Inject
+    CustomerServiceLocal customerService;
+
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
 
@@ -57,11 +61,13 @@ public class PurchaseService implements PurchaseServiceLocal {
 
         String payId = paymentService.sendRequest(String.valueOf(purchaseId));
 
-        String messageid = enappQueue.sendMsg(payId, purchaseId, purchaseitemDtoList, customerDTO);
+        String messageId = enappQueue.sendMsg(payId, purchaseId, purchaseitemDtoList, customerDTO);
 
-        purchase.setMessageid(messageid);
+        purchase.setMessageid(messageId);
 
         entityManager.flush();
+
+        customerService.updateDynNAVNo(messageId);
     }
 
     private Purchase persistPurchase(CustomerDTO customerDTO, List<PurchaseitemDTO> purchaseitemDtoList) {
@@ -97,9 +103,11 @@ public class PurchaseService implements PurchaseServiceLocal {
     @Override
     public List<PurchaseDTO> getPurchases() {
         List<Purchase> purchases = entityManager.createNamedQuery("getPurchase", Purchase.class).getResultList();
+
         for (Purchase purchase : purchases) {
             purchase.getPurchaseitems().size();
         }
+
         return purchaseConverter.convertListToDto(purchases);
     }
 

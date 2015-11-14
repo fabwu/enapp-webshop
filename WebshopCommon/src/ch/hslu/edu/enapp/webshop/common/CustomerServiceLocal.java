@@ -9,4 +9,6 @@ public interface CustomerServiceLocal {
 
     CustomerDTO getCurrentCustomer();
 
+    void updateDynNAVNo(String messageId);
+
 }

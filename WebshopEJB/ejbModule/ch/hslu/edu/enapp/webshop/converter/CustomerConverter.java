@@ -11,8 +11,9 @@ public class CustomerConverter implements Serializable {
 
     public Customer convertToEntity(CustomerDTO dto) {
         Customer customer = new Customer();
-        customer.setAddress(dto.getAddress());
         customer.setCustomerid(dto.getCustomerid());
+        customer.setDynNavNo(dto.getDynNavNo());
+        customer.setAddress(dto.getAddress());
         customer.setEmail(dto.getEmail());
         customer.setName(dto.getName());
         customer.setPassword(dto.getPassword());
@@ -23,8 +24,9 @@ public class CustomerConverter implements Serializable {
 
     public CustomerDTO convertToDto(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
-        dto.setAddress(customer.getAddress());
         dto.setCustomerid(customer.getCustomerid());
+        dto.setDynNavNo(customer.getDynNavNo());
+        dto.setAddress(customer.getAddress());
         dto.setEmail(customer.getEmail());
         dto.setName(customer.getName());
         dto.setPassword(customer.getPassword());

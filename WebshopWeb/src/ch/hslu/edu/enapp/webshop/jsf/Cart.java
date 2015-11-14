@@ -37,9 +37,8 @@ public class Cart implements Serializable {
             Integer quantity = Integer.valueOf(input);
             if (quantity > 0) {
                 shoppingCartService.addProduct(product, quantity);
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Artikel zum Warenkorb hinzugefügt!", "");
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                showInfoMessage("Artikel zum Warenkorb hinzugefügt!");
+
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -51,18 +50,21 @@ public class Cart implements Serializable {
         if (!purchaseItems.isEmpty()) {
             purchaseService.order(purchaseItems, customerService.getCurrentCustomer());
             shoppingCartService.clear();
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Deine Bestellung wurde erfolgreich abgeschickt!", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            showInfoMessage("Deine Bestellung wurde erfolgreich abgeschickt!");
+
         } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Warenkorb ist leer!", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            showInfoMessage("Warenkorb ist leer!");
         }
     }
 
     public List<PurchaseitemDTO> getPurchaseitemList() {
         purchaseitemList = shoppingCartService.getPurchaseitems();
         return purchaseitemList;
+    }
+
+    private void showInfoMessage(String message) {
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, message, "");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
 }

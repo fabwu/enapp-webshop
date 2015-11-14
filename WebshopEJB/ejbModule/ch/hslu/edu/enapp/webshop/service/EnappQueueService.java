@@ -1,4 +1,4 @@
-package ch.hslu.edu.enapp.webshop.message;
+package ch.hslu.edu.enapp.webshop.service;
 
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -23,13 +23,16 @@ import javax.xml.bind.Marshaller;
 import ch.hslu.edu.enapp.webshop.common.EnappQueueLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.PurchaseitemDTO;
+import ch.hslu.edu.enapp.webshop.messages.CustomerMessage;
+import ch.hslu.edu.enapp.webshop.messages.LineMessage;
+import ch.hslu.edu.enapp.webshop.messages.PurchaseMessage;
 
 /**
  * Session Bean implementation class EnappQueue
  */
 @Stateless
 @LocalBean
-public class EnappQueue implements EnappQueueLocal {
+public class EnappQueueService implements EnappQueueLocal {
 
     private static final String STUDENT = "tdwuethr";
 
@@ -58,6 +61,7 @@ public class EnappQueue implements EnappQueueLocal {
         purchaseMessage.setDate(new Date());
 
         CustomerMessage customerMessage = new CustomerMessage();
+        customerMessage.setDynNavCustNo(customerDTO.getDynNavNo());
         customerMessage.setName(customerDTO.getName());
         customerMessage.setAddress(customerDTO.getAddress());
         customerMessage.setShopLoginname(customerDTO.getUsername());
@@ -90,6 +94,9 @@ public class EnappQueue implements EnappQueueLocal {
             textMessage.setJMSCorrelationID(correlationId);
 
             messageProducer.send(textMessage);
+
+            session.close();
+            connection.close();
         } catch (JMSException e) {
             e.printStackTrace();
             correlationId = "";

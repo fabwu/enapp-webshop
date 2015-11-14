@@ -34,6 +34,9 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerid;
 
+    @Column
+    private String dynNavNo;
+
     @Column(name = "\"ADDRESS\"")
     private String address;
 
@@ -60,6 +63,14 @@ public class Customer implements Serializable {
 
     public void setCustomerid(int customerid) {
         this.customerid = customerid;
+    }
+
+    public String getDynNavNo() {
+        return dynNavNo;
+    }
+
+    public void setDynNavNo(String dynNavNo) {
+        this.dynNavNo = dynNavNo;
     }
 
     public String getAddress() {

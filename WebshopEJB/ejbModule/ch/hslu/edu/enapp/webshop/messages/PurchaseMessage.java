@@ -1,4 +1,4 @@
-package ch.hslu.edu.enapp.webshop.message;
+package ch.hslu.edu.enapp.webshop.messages;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

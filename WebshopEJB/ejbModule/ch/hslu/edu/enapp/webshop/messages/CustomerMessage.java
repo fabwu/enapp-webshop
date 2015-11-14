@@ -1,4 +1,4 @@
-package ch.hslu.edu.enapp.webshop.message;
+package ch.hslu.edu.enapp.webshop.messages;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

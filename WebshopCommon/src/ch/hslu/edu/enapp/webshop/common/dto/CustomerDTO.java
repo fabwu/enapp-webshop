@@ -8,6 +8,8 @@ public class CustomerDTO implements Serializable {
 
     private int customerid;
 
+    private String dynNavNo;
+
     private String address;
 
     private String email;
@@ -26,6 +28,14 @@ public class CustomerDTO implements Serializable {
 
     public void setCustomerid(int customerid) {
         this.customerid = customerid;
+    }
+
+    public String getDynNavNo() {
+        return dynNavNo;
+    }
+
+    public void setDynNavNo(String dynNavNo) {
+        this.dynNavNo = dynNavNo;
     }
 
     public String getAddress() {
