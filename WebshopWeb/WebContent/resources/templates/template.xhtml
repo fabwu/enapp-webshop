@@ -28,16 +28,18 @@
                         <h:outputText value="Hallo, #{customer.currentCustomer.name}" />
                         <hr />
                     </h:panelGroup>
-                    <h:link value="Home" outcome="index" />
+                    <h:link value="Home" outcome="/index" />
                     <br />
-                    <h:link value="Warenkorb" outcome="cart" />
+                    <h:link value="Warenkorb" outcome="/cart" />
                     <br />
-                    <h:link value="Bestellungen" outcome="purchase" />
+                    <h:link value="Bestellungen" outcome="/purchase" />
                     <br />
-                    <h:link rendered="#{customer.currentCustomer==null}" value="Login" outcome="login" />
+                    <h:link rendered="#{customer.currentCustomer==null}" value="Login" outcome="/login" />
 
                     <h:commandLink rendered="#{customer.currentCustomer!=null}" actionListener="#{customer.logout}"
                         value="Logout" />
+                    <br />
+                    <h:link value="Admin" outcome="/secure/secured_index.html" />
                 </div>
             </h:form>
             <div id="content" class="content">

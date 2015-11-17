@@ -79,7 +79,8 @@
             <http-method>POST</http-method>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>webshopUserRole</role-name>
+            <role-name>webshopAdminRole</role-name>
+
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -89,4 +90,7 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    <security-role>
+        <role-name>webshopAdminRole</role-name>
+    </security-role>
 </web-app>

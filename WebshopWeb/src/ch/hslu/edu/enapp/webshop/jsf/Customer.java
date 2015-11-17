@@ -2,6 +2,7 @@ package ch.hslu.edu.enapp.webshop.jsf;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -26,7 +27,11 @@ public class Customer implements Serializable {
         final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.invalidateSession();
         externalContext.redirect(externalContext.getRequestContextPath()
-                + "/ibm_security_logout?logoutExitPage=/index.xhtml");
+                + "/ibm_security_logout?logoutExitPage=index.xhtml");
+    }
+
+    public List<CustomerDTO> getCustomers() {
+        return customerService.getAllCustomers();
     }
 
     public CustomerDTO getCurrentCustomer() {

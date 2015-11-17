@@ -8,4 +8,7 @@
         <group name="userRole" />
     </security-role>
 
+    <security-role name="webshopAdminRole">
+        <group name="adminRole" />
+    </security-role>
 </application-bnd>

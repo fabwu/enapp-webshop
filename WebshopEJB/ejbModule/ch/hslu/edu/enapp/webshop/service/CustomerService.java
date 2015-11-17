@@ -1,5 +1,7 @@
 package ch.hslu.edu.enapp.webshop.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJBContext;
@@ -33,6 +35,13 @@ public class CustomerService implements CustomerServiceLocal {
 
     @Inject
     StatusCheckService statusCheckService;
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> entityList = entityManager.createNamedQuery("getCustomer", Customer.class).getResultList();
+        List<CustomerDTO> dtoList = converter.convertListToDto(entityList);
+        return dtoList;
+    }
 
     @Override
     public CustomerDTO getCurrentCustomer() {
@@ -73,4 +82,5 @@ public class CustomerService implements CustomerServiceLocal {
 
         return customer;
     }
+
 }

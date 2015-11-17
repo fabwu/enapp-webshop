@@ -1,6 +1,8 @@
 package ch.hslu.edu.enapp.webshop.converter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.entity.Customer;
@@ -33,6 +35,17 @@ public class CustomerConverter implements Serializable {
         // TODO dto.setPurchases(customer.getPurchases());
         dto.setUsername(customer.getUsername());
         return dto;
+    }
+
+    public List<CustomerDTO> convertListToDto(List<Customer> entityList) {
+        List<CustomerDTO> dtoList = new ArrayList<>();
+
+        for (Customer customer : entityList) {
+            CustomerDTO dto = convertToDto(customer);
+            dtoList.add(dto);
+        }
+
+        return dtoList;
     }
 
 }
