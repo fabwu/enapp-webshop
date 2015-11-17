@@ -52,6 +52,9 @@ public class PurchaseService implements PurchaseServiceLocal {
     @Inject
     CustomerServiceLocal customerService;
 
+    @Inject
+    StatusCheckService statusCheckService;
+
     @Override
     public void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO) {
 
@@ -68,6 +71,7 @@ public class PurchaseService implements PurchaseServiceLocal {
         entityManager.flush();
 
         customerService.updateDynNAVNo(messageId);
+        statusCheckService.updatePurchaseStatus();
     }
 
     private Purchase persistPurchase(CustomerDTO customerDTO, List<PurchaseitemDTO> purchaseitemDtoList) {
