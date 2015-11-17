@@ -8,6 +8,7 @@
             <h:outputFormat value="Adminbereich" />
         </h1>
         <br />
+        <h:form id="customer_form" acceptcharset="UTF-8" enctype="application/x-www-form-urlencoded;charset=UTF-8">
         <table>
             <tr>
                 <td><b>DynNavNo</b></td>
@@ -15,16 +16,20 @@
                 <td><b>Benutzername</b></td>
                 <td><b>Adresse</b></td>
                 <td><b>E-Mail</b></td>
+                <td></td>
             </tr>
             <ui:repeat value="#{customer.customers}" var="singleCustomer">
                 <tr>
-                    <td><h:outputText value="#{singleCustomer.dynNavNo}" /></td>
-                    <td><h:outputText value="#{singleCustomer.name}" /></td>
-                    <td><h:outputText value="#{singleCustomer.username}" /></td>
-                    <td><h:outputText value="#{singleCustomer.address}" /></td>
-                    <td><h:outputText value="#{singleCustomer.email}" /></td>
+                    <td><h:inputText value="#{singleCustomer.dynNavNo}" size="6"/></td>
+                    <td><h:inputText value="#{singleCustomer.name}" size="10" /></td>
+                    <td><h:inputText value="#{singleCustomer.username}" size="12"/></td>
+                    <td><h:inputText value="#{singleCustomer.address}" size="12" /></td>
+                    <td><h:inputText value="#{singleCustomer.email}" /></td>
+                    <td><h:commandButton value="Ändern"
+                            action="#{customer.changeCustomer(singleCustomer)}" /></td>
                 </tr>
             </ui:repeat>
         </table>
+        </h:form>
     </ui:define>
 </ui:composition>

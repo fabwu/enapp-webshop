@@ -100,4 +100,11 @@ public class CustomerDTO implements Serializable {
         return purchas;
     }
 
+    @Override
+    public String toString() {
+        return "CustomerDTO [customerid=" + customerid + ", dynNavNo=" + dynNavNo + ", address=" + address + ", email="
+                + email + ", name=" + name + ", password=" + password + ", username=" + username + ", purchases="
+                + purchases + "]";
+    }
+
 }

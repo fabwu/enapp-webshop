@@ -38,4 +38,8 @@ public class Customer implements Serializable {
         return customerService.getCurrentCustomer();
     }
 
+    public void changeCustomer(CustomerDTO customerDTO) {
+        customerService.updateCustomer(customerDTO);
+    }
+
 }

@@ -56,6 +56,12 @@ public class CustomerService implements CustomerServiceLocal {
         return customerDto;
     }
 
+    @Override
+    public void updateCustomer(CustomerDTO customerDTO) {
+        Customer entity = converter.convertToEntity(customerDTO);
+        entityManager.merge(entity);
+    }
+
     @Asynchronous
     @Override
     public void updateDynNAVNo(String messageId) {

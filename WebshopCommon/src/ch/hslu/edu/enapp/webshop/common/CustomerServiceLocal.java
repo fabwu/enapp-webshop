@@ -13,6 +13,8 @@ public interface CustomerServiceLocal {
 
     CustomerDTO getCurrentCustomer();
 
+    void updateCustomer(CustomerDTO customerDTO);
+
     void updateDynNAVNo(String messageId);
 
 }
