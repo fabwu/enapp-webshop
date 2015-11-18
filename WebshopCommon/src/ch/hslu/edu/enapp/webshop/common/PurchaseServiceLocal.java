@@ -13,6 +13,6 @@ public interface PurchaseServiceLocal {
 
     void order(List<PurchaseitemDTO> purchaseitemDtoList, CustomerDTO customerDTO);
 
-    List<PurchaseDTO> getPurchases();
+    List<PurchaseDTO> getPurchasesFromCurrentCustomer();
 
 }

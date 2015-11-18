@@ -22,8 +22,7 @@ public class Purchase implements Serializable {
     private List<PurchaseDTO> purchases;
 
     public List<PurchaseDTO> getPurchases() {
-        purchases = purchaseService.getPurchases();
+        purchases = purchaseService.getPurchasesFromCurrentCustomer();
         return purchases;
     }
-
 }

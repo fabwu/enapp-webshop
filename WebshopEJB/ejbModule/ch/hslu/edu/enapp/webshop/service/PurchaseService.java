@@ -2,6 +2,7 @@ package ch.hslu.edu.enapp.webshop.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -105,8 +106,15 @@ public class PurchaseService implements PurchaseServiceLocal {
     }
 
     @Override
-    public List<PurchaseDTO> getPurchases() {
-        List<Purchase> purchases = entityManager.createNamedQuery("getPurchase", Purchase.class).getResultList();
+    public List<PurchaseDTO> getPurchasesFromCurrentCustomer() {
+        CustomerDTO currentCustomer = customerService.getCurrentCustomer();
+
+        if (currentCustomer == null) {
+            return Collections.emptyList();
+        }
+
+        List<Purchase> purchases = entityManager.createNamedQuery("getPurchaseByCustomerBean", Purchase.class)
+                .setParameter("customer_customerid", currentCustomer.getCustomerid()).getResultList();
 
         for (Purchase purchase : purchases) {
             purchase.getPurchaseitems().size();
