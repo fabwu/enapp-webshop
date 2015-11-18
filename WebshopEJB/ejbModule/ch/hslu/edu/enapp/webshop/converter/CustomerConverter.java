@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ch.hslu.edu.enapp.webshop.common.dto.AuthgroupDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.entity.Customer;
 
 public class CustomerConverter implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Inject
+    AuthgroupConverter authgroupConverter;
 
     public Customer convertToEntity(CustomerDTO dto) {
         Customer customer = new Customer();
@@ -34,6 +40,10 @@ public class CustomerConverter implements Serializable {
         dto.setPassword(customer.getPassword());
         // TODO dto.setPurchases(customer.getPurchases());
         dto.setUsername(customer.getUsername());
+
+        List<AuthgroupDTO> authgroupDTOs = authgroupConverter.convertListToDto(customer.getAuthgroups());
+        dto.setAuthgroups(authgroupDTOs);
+
         return dto;
     }
 

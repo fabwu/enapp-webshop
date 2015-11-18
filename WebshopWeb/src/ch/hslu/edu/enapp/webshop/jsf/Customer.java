@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ch.hslu.edu.enapp.webshop.common.CustomerServiceLocal;
+import ch.hslu.edu.enapp.webshop.common.dto.AuthgroupDTO;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 
 @Named
@@ -32,6 +33,24 @@ public class Customer implements Serializable {
 
     public List<CustomerDTO> getCustomers() {
         return customerService.getAllCustomers();
+    }
+
+    public boolean isInAdminGroup() {
+        CustomerDTO currentCustomer = getCurrentCustomer();
+
+        if (currentCustomer == null) {
+            return false;
+        }
+
+        List<AuthgroupDTO> authgroups = currentCustomer.getAuthgroups();
+
+        for (AuthgroupDTO authgroupDTO : authgroups) {
+            if ("adminRole".equals(authgroupDTO.getGroupname())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public CustomerDTO getCurrentCustomer() {

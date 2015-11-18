@@ -22,6 +22,8 @@ public class CustomerDTO implements Serializable {
 
     private List<PurchaseDTO> purchases;
 
+    private List<AuthgroupDTO> authgroups;
+
     public int getCustomerid() {
         return this.customerid;
     }
@@ -100,11 +102,19 @@ public class CustomerDTO implements Serializable {
         return purchas;
     }
 
+    public List<AuthgroupDTO> getAuthgroups() {
+        return authgroups;
+    }
+
+    public void setAuthgroups(List<AuthgroupDTO> authgroups) {
+        this.authgroups = authgroups;
+    }
+
     @Override
     public String toString() {
         return "CustomerDTO [customerid=" + customerid + ", dynNavNo=" + dynNavNo + ", address=" + address + ", email="
                 + email + ", name=" + name + ", password=" + password + ", username=" + username + ", purchases="
-                + purchases + "]";
+                + purchases + ", authgroups=" + authgroups + "]";
     }
 
 }

@@ -29,6 +29,8 @@
                         <hr />
                     </h:panelGroup>
                     <h:link value="Home" outcome="/index" />
+                    <h:panelGroup rendered="#{customer.isInAdminGroup()}"><br /></h:panelGroup>
+                    <h:link rendered="#{customer.isInAdminGroup()}" value="Admin" outcome="/secure/secured_index.xhtml" />
                     <br />
                     <h:link value="Warenkorb" outcome="/cart" />
                     <br />
@@ -38,8 +40,6 @@
 
                     <h:commandLink rendered="#{customer.currentCustomer!=null}" actionListener="#{customer.logout}"
                         value="Logout" />
-                    <br />
-                    <h:link value="Admin" outcome="/secure/secured_index.xhtml" />
                 </div>
             </h:form>
             <div id="content" class="content">
