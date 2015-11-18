@@ -5,9 +5,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -19,14 +23,14 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 
-        @NamedQuery(name = "getCustomerByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
+    @NamedQuery(name = "getCustomerByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
 
-        @NamedQuery(name = "getCustomerByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password"),
-        @NamedQuery(name = "getCustomerByName", query = "SELECT c FROM Customer c WHERE c.name = :name"),
-        @NamedQuery(name = "getCustomerByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email"),
-        @NamedQuery(name = "getCustomerByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
-        @NamedQuery(name = "getCustomerByCustomerid", query = "SELECT c FROM Customer c WHERE c.customerid = :customerid"),
-        @NamedQuery(name = "getCustomer", query = "SELECT c FROM Customer c") })
+    @NamedQuery(name = "getCustomerByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password"),
+    @NamedQuery(name = "getCustomerByName", query = "SELECT c FROM Customer c WHERE c.name = :name"),
+    @NamedQuery(name = "getCustomerByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email"),
+    @NamedQuery(name = "getCustomerByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
+    @NamedQuery(name = "getCustomerByCustomerid", query = "SELECT c FROM Customer c WHERE c.customerid = :customerid"),
+    @NamedQuery(name = "getCustomer", query = "SELECT c FROM Customer c") })
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -50,9 +54,12 @@ public class Customer implements Serializable {
 
     private String username;
 
-    // bi-directional many-to-one association to Purchase
     @OneToMany(mappedBy = "customer")
     private List<Purchase> purchases;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "USERGROUP", joinColumns = { @JoinColumn(name = "IDUSER", referencedColumnName = "customerid") }, inverseJoinColumns = { @JoinColumn(name = "IDGROUP", referencedColumnName = "idauthgroup") })
+    private List<Authgroup> authgroups;
 
     public Customer() {
     }
@@ -133,6 +140,14 @@ public class Customer implements Serializable {
         purchas.setCustomer(null);
 
         return purchas;
+    }
+
+    public List<Authgroup> getAuthgroups() {
+        return authgroups;
+    }
+
+    public void setAuthgroups(List<Authgroup> authgroups) {
+        this.authgroups = authgroups;
     }
 
 }

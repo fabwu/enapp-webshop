@@ -1,5 +1,6 @@
 package ch.hslu.edu.enapp.webshop.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import ch.hslu.edu.enapp.webshop.common.CustomerServiceLocal;
 import ch.hslu.edu.enapp.webshop.common.dto.CustomerDTO;
 import ch.hslu.edu.enapp.webshop.converter.CustomerConverter;
+import ch.hslu.edu.enapp.webshop.entity.Authgroup;
 import ch.hslu.edu.enapp.webshop.entity.Customer;
 import ch.hslu.edu.enapp.webshop.messages.SalesOrderMessage;
 
@@ -37,6 +39,30 @@ public class CustomerService implements CustomerServiceLocal {
     StatusCheckService statusCheckService;
 
     @Override
+    public void createCustomer(CustomerDTO customer) {
+        List<Customer> existingCustomer = entityManager.createNamedQuery("getCustomerByUsername", Customer.class)
+                .setParameter("username", customer.getUsername()).getResultList();
+
+        if (existingCustomer.size() != 0) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+        Authgroup userGroup = entityManager.createNamedQuery("getAuthgroupByGroupname", Authgroup.class)
+                .setParameter("groupname", "userRole").getSingleResult();
+
+        Customer entity = converter.convertToEntity(customer);
+        entity.setAuthgroups(Collections.singletonList(userGroup));
+
+        entityManager.persist(entity);
+    }
+
+    @Override
+    public void updateCustomer(CustomerDTO customerDTO) {
+        Customer entity = converter.convertToEntity(customerDTO);
+        entityManager.merge(entity);
+    }
+
+    @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> entityList = entityManager.createNamedQuery("getCustomer", Customer.class).getResultList();
         List<CustomerDTO> dtoList = converter.convertListToDto(entityList);
@@ -54,12 +80,6 @@ public class CustomerService implements CustomerServiceLocal {
         }
 
         return customerDto;
-    }
-
-    @Override
-    public void updateCustomer(CustomerDTO customerDTO) {
-        Customer entity = converter.convertToEntity(customerDTO);
-        entityManager.merge(entity);
     }
 
     @Asynchronous
