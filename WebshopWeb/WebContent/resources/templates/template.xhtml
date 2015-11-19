@@ -29,12 +29,21 @@
                         <hr />
                     </h:panelGroup>
                     <h:link value="Home" outcome="/index" />
-                    <h:panelGroup rendered="#{customer.isInAdminGroup()}"><br /></h:panelGroup>
+                    <h:panelGroup rendered="#{customer.isInAdminGroup()}">
+                        <br />
+                    </h:panelGroup>
                     <h:link rendered="#{customer.isInAdminGroup()}" value="Admin" outcome="/secure/secured_index.xhtml" />
                     <br />
                     <h:link value="Warenkorb" outcome="/cart" />
-                    <h:panelGroup rendered="#{customer.currentCustomer!=null}"><br /></h:panelGroup>
+                    <h:panelGroup rendered="#{customer.currentCustomer!=null}">
+                        <br />
+                    </h:panelGroup>
                     <h:link rendered="#{customer.currentCustomer!=null}" value="Bestellungen" outcome="/purchase" />
+                    <h:panelGroup rendered="#{customer.currentCustomer!=null}">
+                        <br />
+                    </h:panelGroup>
+                    <h:link rendered="#{customer.currentCustomer!=null}" outcome="/profile"
+                        value="Profil" />
                     <br />
                     <h:link rendered="#{customer.currentCustomer==null}" value="Login" outcome="/login" />
 
