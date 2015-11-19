@@ -2,7 +2,6 @@ package ch.hslu.edu.enapp.webshop.service;
 
 import java.util.List;
 
-import javax.ejb.Asynchronous;
 import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
@@ -31,8 +30,7 @@ public class StatusCheckService {
     @PersistenceContext
     EntityManager entityManager;
 
-    @Schedule(hour = "1")
-    @Asynchronous
+    @Schedule(hour = "*", minute = "*")
     public void updatePurchaseStatus() {
         List<Purchase> resultList = entityManager.createNamedQuery("getPurchase", Purchase.class).getResultList();
         for (Purchase purchase : resultList) {

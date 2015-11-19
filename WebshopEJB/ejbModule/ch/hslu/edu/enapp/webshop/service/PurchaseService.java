@@ -72,7 +72,6 @@ public class PurchaseService implements PurchaseServiceLocal {
         entityManager.flush();
 
         customerService.updateDynNAVNo(messageId);
-        statusCheckService.updatePurchaseStatus();
     }
 
     private Purchase persistPurchase(CustomerDTO customerDTO, List<PurchaseitemDTO> purchaseitemDtoList) {
